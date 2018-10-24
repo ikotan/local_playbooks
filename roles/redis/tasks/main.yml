@@ -1,0 +1,14 @@
+---
+- block:
+
+  - name: install redis
+    yum: name={{item}} state=latest
+    with_items:
+      - redis
+    tags:
+      - redis
+
+  - name: redis boot and restart
+    service: name=redis enabled=yes state=restarted
+    tags:
+      - redis
