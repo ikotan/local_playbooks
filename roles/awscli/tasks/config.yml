@@ -1,5 +1,6 @@
 ---
 - block:
+
   - name: aws cli config aws_access_key_id
     command: "aws configure set aws_access_key_id {{ awscli.key }}"
 

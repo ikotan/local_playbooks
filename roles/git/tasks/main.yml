@@ -1,0 +1,35 @@
+---
+- block:
+
+  - name: uninstall git
+    become: yes
+    yum:
+      name: git
+      state: absent
+
+  - name: install package
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - curl-devel
+      - expat-devel
+      - gettext-devel
+      - openssl-devel
+      - zlib-devel
+      - perl-ExtUtils-MakeMaker
+
+  - name: install ius
+    become: yes
+    yum:
+      name: https://centos7.iuscommunity.org/ius-release.rpm
+  
+  - name: install git
+    become: yes
+    yum:
+      name: git2u
+      state: latest
+
+  tags:
+    - git
