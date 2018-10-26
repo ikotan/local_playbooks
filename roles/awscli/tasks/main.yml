@@ -1,0 +1,19 @@
+---
+- block:
+
+  - name: install pip
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - python-pip
+
+  - name: pip upgrade and install awscli
+    shell: pip install --upgrade awscli --user
+
+  - name: include aws cli config
+    include_tasks: config.yml 
+
+  tags:
+    - awscli

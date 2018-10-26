@@ -1,0 +1,49 @@
+---
+- block:
+
+  - name: install package
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+
+  - name: add docker repo
+    become: yes
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    args:
+      chdir: "/etc/yum.repos.d"
+      creates: docker-ce.repo
+
+  - name: install docker-ce
+    become: yes
+    yum:
+      name: docker-ce
+      state: latest
+
+  - name: docker boot and restart
+    become: yes
+    systemd:
+      name: docker.service
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+
+  - block:
+
+    - name: install docker-compose
+      become: yes
+      shell: curl -L https://github.com/docker/compose/releases/download/{{docker_compose.version}}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+
+    - name: execution permission
+      become: yes
+      shell: chmod +x /usr/local/bin/docker-compose
+
+    tags:
+      - docker-compose
+
+  tags:
+    - docker

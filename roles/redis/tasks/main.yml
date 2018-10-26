@@ -2,13 +2,20 @@
 - block:
 
   - name: install redis
-    yum: name={{item}} state=latest
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
     with_items:
-      - redis
-    tags:
       - redis
 
   - name: redis boot and restart
-    service: name=redis enabled=yes state=restarted
-    tags:
-      - redis
+    become: yes
+    systemd:
+      name: redis
+      state: restarted
+      daemon_reload: yes
+      enabled: yes
+
+  tags:
+    - redis

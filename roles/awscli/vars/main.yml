@@ -1,0 +1,6 @@
+---
+awscli:
+  key: "your_key"
+  secret: "your_secret"
+  region: ap-northeast-1
+  output: json

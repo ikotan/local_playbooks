@@ -1,0 +1,16 @@
+---
+- block:
+  - name: aws cli config aws_access_key_id
+    command: "aws configure set aws_access_key_id {{ awscli.key }}"
+
+  - name: aws cli config aws_secret_access_key
+    command: "aws configure set aws_secret_access_key {{ awscli.secret }}"
+
+  - name: aws cli config default.region
+    command: "aws configure set default.region {{ awscli.region }}"
+
+  - name: aws cli config default.output
+    command: "aws configure set default.output {{ awscli.output }}"
+
+  tags:
+    - awscli
