@@ -7,7 +7,10 @@
 
   - name: install docker-compose
     become: yes
-    shell: curl -L https://github.com/docker/compose/releases/download/{{docker_compose_latest_version.stdout}}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    shell: curl -L https://github.com/docker/compose/releases/download/{{docker_compose_latest_version.stdout}}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    args:
+      chdir: /usr/local/bin
+      creates: docker-compose
 
   - name: execution permission
     become: yes
