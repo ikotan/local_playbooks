@@ -1,0 +1,47 @@
+---
+- block:
+
+  - name: install package
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - wget
+      - gcc 
+      - make
+      - ncurses
+      - ncurses-devel
+      - libevent-devel
+
+  - name: exist tmux
+    stat:
+      path: /usr/local/bin/tmux
+    register: exist_tmux
+
+  - name: get latest tmux version
+    when: not exist_tmux.stat.exists
+    shell: curl -sI https://github.com/tmux/tmux/releases/latest | awk -F'/' '/^Location:/{print $NF}'
+    register: tmux_latest_version
+
+  - name: download tmux
+    when: not exist_tmux.stat.exists
+    become: yes
+    get_url:
+      url: https://github.com/tmux/tmux/releases/download/{{tmux_latest_version.stdout}}/tmux-{{tmux_latest_version.stdout}}.tar.gz
+      dest: /tmp/tmux-{{tmux_latest_version.stdout}}.tar.gz
+
+  - name: unzip tmux
+    when: not exist_tmux.stat.exists
+    become: yes
+    shell: tar xfC /tmp/tmux-{{tmux_latest_version.stdout}}.tar.gz /tmp
+
+  - name: make install tmux
+    when: not exist_tmux.stat.exists
+    become: yes
+    shell: cd /tmp/tmux-{{tmux_latest_version.stdout}} \
+      && LDFLAGS="-L/usr/local/lib -Wl,-rpath=/usr/local/lib" ./configure --prefix=/usr/local \
+      && make && sudo make install
+
+  tags:
+    - tmux
