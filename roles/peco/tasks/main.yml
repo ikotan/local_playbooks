@@ -1,0 +1,27 @@
+---
+- block:
+
+  - name: get latest peco version
+    shell: curl -sI https://github.com/peco/peco/releases/latest | awk -F'/' '/^Location:/{print $NF}'
+    register: peco_latest_version
+
+  - name: install peco
+    become: yes
+    get_url:
+      url: https://github.com/peco/peco/releases/download/{{ peco_latest_version.stdout }}/peco_linux_amd64.tar.gz
+      dest: /tmp
+
+  - name: unzip peco
+    unarchive:
+      src: /tmp/peco_linux_amd64.tar.gz
+      dest: /tmp
+  
+  - name: copy to /usr/bin/
+    become: yes
+    copy:
+      src: /tmp/peco_linux_amd64/peco
+      dest: /usr/bin/
+      mode: 0755
+
+  tags:
+    - peco

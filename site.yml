@@ -4,8 +4,10 @@
   gather_facts: no
   roles:
     - git
-    - awscli
     - jq
+    - peco
+    - packages
+    - awscli
     - redis
     - awscli
     - docker
