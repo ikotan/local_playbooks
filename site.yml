@@ -3,6 +3,9 @@
   connection: local
   gather_facts: no
   roles:
+    - git
+    - awscli
+    - jq
     - redis
     - awscli
     - docker

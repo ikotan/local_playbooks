@@ -1,0 +1,13 @@
+---
+- block:
+
+  - name: install jq
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - jq
+
+  tags:
+    - jq
