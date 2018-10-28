@@ -27,7 +27,7 @@
     when: not exist_zsh.stat.exists
     become: yes
     get_url:
-      url: https://sourceforge.net/projects/zsh/files/zsh/5.6.2/zsh-{{zsh.version}}.tar.xz/download
+      url: https://sourceforge.net/projects/zsh/files/zsh/{{zsh.version}}/zsh-{{zsh.version}}.tar.xz/download
       dest: /tmp/zsh-{{zsh.version}}.tar.gz
 
   - name: unzip zsh
