@@ -34,13 +34,8 @@
 
   - block:
 
-    - name: install docker-compose
-      become: yes
-      shell: curl -L https://github.com/docker/compose/releases/download/{{docker_compose.version}}/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
-
-    - name: execution permission
-      become: yes
-      shell: chmod +x /usr/local/bin/docker-compose
+    - name: include docker-compose install
+      include_tasks: docker-compose.yml 
 
     tags:
       - docker-compose
