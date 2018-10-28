@@ -1,0 +1,49 @@
+---
+- block:
+
+  - name: install packages of vim
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - mercurial
+      - ncurses-devel
+      - lua-devel
+      - perl-ExtUtils-Embed
+
+  - name: uninstall vim
+    become: yes
+    yum:
+      name: vim-enhanced
+      state: absent
+
+  - name: exist vim
+    stat: path="/usr/local/bin/vim"
+    register: exist_vim
+    tags:
+      - vim
+  
+  - name: download vim
+    when: not exist_vim.stat.exists
+    git:
+      repo: https://github.com/vim/vim.git
+      dest: /tmp/vim
+      version: master
+      accept_hostkey: yes
+
+  - name: make install vim
+    when: not exist_vim.stat.exists
+    shell: ./configure \
+        --with-features=huge \
+        --enable-multibyte \
+        --enable-luainterp \
+        --enable-gpm \
+        --enable-cscope \
+        --enable-fontset \
+      && make && sudo make install
+    args:
+      chdir: /tmp/vim
+
+  tags:
+    - vim

@@ -7,6 +7,7 @@
     - jq
     - peco
     - packages
+    - vim
     - tmux
     - awscli
     - redis
