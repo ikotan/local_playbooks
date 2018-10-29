@@ -1,0 +1,5 @@
+---
+zsh:
+  path: "/usr/local/bin/zsh"
+user: "vagrant"
+home: "/home/vagrant"

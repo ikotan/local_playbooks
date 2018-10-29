@@ -1,0 +1,38 @@
+---
+- block:
+
+  - name: change shell to zsh
+    become: yes
+    user:
+      name: "{{user}}"
+      shell: "{{zsh.path}}"
+      state: present
+  
+  - name: install prezto
+    git:
+      repo: https://github.com/sorin-ionescu/prezto.git
+      dest: "{{home}}/.zprezto"
+      version: master
+      accept_hostkey: yes
+  
+  - name: add symbolic link dotfiles
+    file: 
+      src: "{{home}}/.zprezto/runcoms/{{item}}"
+      dest: "{{home}}/.{{item}}"
+      state: "link"
+    with_items:
+      - zlogin
+      - zlogout
+      - zshrc
+      - zpreztorc
+      - zprofile
+      - zshenv
+
+  - name: set prompt theme
+    lineinfile:
+      dest: "{{home}}/.zprezto/runcoms/zpreztorc"
+      regexp: "':prezto:module:prompt' theme"
+      line: "zstyle ':prezto:module:prompt' theme 'steeef'"
+  
+  tags:
+    - prezto
