@@ -28,8 +28,10 @@
   - name: install git
     become: yes
     yum:
-      name: git2u
+      name: "{{item}}"
       state: latest
+    with_items:
+      - git2u
 
   tags:
     - git
