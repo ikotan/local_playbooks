@@ -1,0 +1,5 @@
+---
+shell_file_path: "~/.zshrc"
+rbenv:
+  bin: "~/.rbenv/bin/rbenv"
+  ruby_version: "2.3.7"

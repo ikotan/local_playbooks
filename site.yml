@@ -11,7 +11,7 @@
     - tmux
     - awscli
     - redis
-    - awscli
     - docker
     - zsh
     - prezto
+    - ruby

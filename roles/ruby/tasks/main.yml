@@ -1,0 +1,71 @@
+---
+- block:
+
+  - name: install dependencies for rbenv and ruby-build
+    become: yes
+    yum: name={{item}} state=latest
+    with_items:
+      - git2u
+      - tar
+      - gcc
+      - make
+      - openssl-devel
+      - libyaml-devel
+      - libffi-devel
+      - readline-devel
+      - zlib-devel
+      - gdbm-devel
+      - ncurses-devel
+
+  - name: install rbenv
+    git:
+      repo: https://github.com/sstephenson/rbenv.git
+      dest: ~/.rbenv
+
+  - name: install ruby-build
+    git:
+      repo: https://github.com/sstephenson/ruby-build.git
+      dest: ~/.rbenv/plugins/ruby-build
+
+  - name: add rbenv bin to PATH
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: "export PATH=$HOME/.rbenv/bin:$PATH"
+
+  - name: eval rbenv init in shell
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: 'eval "$(rbenv init -)"'
+
+  - name: check if {{rbenv.ruby_version}} is installed
+    shell: "{{rbenv.bin}} versions | grep {{rbenv.ruby_version}}"
+    register: rbenv_check_install
+    changed_when: False
+    ignore_errors: True
+
+  - name: install ruby version {{rbenv.ruby_version}}
+    shell: "{{rbenv.bin}} install -v {{rbenv.ruby_version}}"
+    when: rbenv_check_install|failed
+
+  - name: version specified to be used
+    shell: "{{rbenv.bin}} global {{ rbenv.ruby_version }}"
+    when: rbenv_check_install|failed
+
+  - name: rbenv rehash
+    shell: "{{rbenv.bin}} rehash"
+    when: rbenv_check_install|failed
+
+  - name: gem install bundler on rbenv
+    gem:
+      name: bundler
+      state: latest
+      executable: ~/.rbenv/shims/gem
+      user_install: False
+    when: rbenv_check_install|failed
+  
+  tags:
+    - ruby
