@@ -12,8 +12,6 @@
     git:
       repo: https://github.com/sorin-ionescu/prezto.git
       dest: "{{home}}/.zprezto"
-      version: master
-      accept_hostkey: yes
   
   - name: add symbolic link dotfiles
     file: 

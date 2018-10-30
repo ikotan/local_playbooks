@@ -20,8 +20,6 @@
   #   git:
   #     repo: https://github.com/zsh-users/zsh.git
   #     dest: /tmp/zsh
-  #     version: master
-  #     accept_hostkey: yes
 
   - name: download zsh
     when: not exist_zsh.stat.exists
