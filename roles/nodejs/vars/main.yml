@@ -1,0 +1,5 @@
+---
+shell_file_path: "~/.zshrc"
+ndenv:
+  bin: "~/.ndenv/bin/ndenv"
+  node_version: "11.0.0"

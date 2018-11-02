@@ -1,0 +1,53 @@
+---
+- block:
+
+  - name: install dependencies for ndenv
+    become: yes
+    yum: name={{item}} state=latest
+    with_items:
+      - git2u
+
+  - name: install ndenv
+    git:
+      repo: https://github.com/riywo/ndenv 
+      dest: ~/.ndenv
+
+  - name: install node-build
+    git:
+      repo: https://github.com/riywo/node-build.git
+      dest: ~/.ndenv/plugins/node-build
+
+  - name: add ndenv bin to PATH
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: "export PATH=$HOME/.ndenv/bin:$PATH"
+
+  - name: eval ndenv init in shell
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: 'eval "$(ndenv init -)"'
+
+  - name: check if {{ndenv.node_version}} is installed
+    shell: "{{ndenv.bin}} versions | grep {{ndenv.node_version}}"
+    register: ndenv_check_install
+    changed_when: False
+    ignore_errors: True
+
+  - name: install node version {{ndenv.node_version}}
+    shell: "{{ndenv.bin}} install -v {{ndenv.node_version}}"
+    when: ndenv_check_install|failed
+
+  - name: version specified to be used
+    shell: "{{ndenv.bin}} global {{ ndenv.node_version }}"
+    when: ndenv_check_install|failed
+
+  - name: ndenv rehash
+    shell: "{{ndenv.bin}} rehash"
+    when: ndenv_check_install|failed
+
+  tags:
+    - nodejs
