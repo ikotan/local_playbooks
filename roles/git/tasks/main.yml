@@ -33,5 +33,18 @@
     with_items:
       - git2u
 
+  - name: create .gitconfig
+    blockinfile:
+      dest: "~/.gitconfig"
+      create: yes
+      content: |
+        [alias]
+          st = status -s
+          ci = commit
+          co = checkout
+          br = branch
+        [color]
+          ui = auto
+
   tags:
     - git
