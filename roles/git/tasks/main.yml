@@ -37,6 +37,7 @@
     blockinfile:
       dest: "~/.gitconfig"
       create: yes
+      # marker: ""
       content: |
         [alias]
           st = status -s

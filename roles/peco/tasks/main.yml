@@ -15,13 +15,29 @@
     unarchive:
       src: /tmp/peco_linux_amd64.tar.gz
       dest: /tmp
-  
+
   - name: copy to /usr/bin/
     become: yes
     copy:
       src: /tmp/peco_linux_amd64/peco
       dest: /usr/bin/
       mode: 0755
+
+  - name: peco config color
+    blockinfile:
+      create: yes
+      dest: "{{home}}/.config/peco/config.json"
+      marker: ""
+      content: |
+        {
+          "Style": {
+            "Basic": ["on_default", "default"],
+            "SavedSelection": ["bold", "on_yellow", "white"],
+            "Selected": ["underline", "on_cyan", "black"],
+            "Query": ["yellow", "bold"],
+            "Matched": ["yellow", "on_default"]
+          }
+        }
 
   tags:
     - peco
