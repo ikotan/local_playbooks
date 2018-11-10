@@ -14,5 +14,6 @@
     - docker
     - zsh
     - prezto
+    - enhancd
     - ruby
     - nodejs
