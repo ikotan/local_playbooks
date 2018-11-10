@@ -1,5 +1,0 @@
----
-shell_file_path: "~/.zshrc"
-pyenv:
-  bin: "~/.pyenv/bin/pyenv"
-  python_version: "3.6.4"
