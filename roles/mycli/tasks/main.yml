@@ -1,0 +1,10 @@
+---
+- block:
+
+  - name: install mycli
+    become: yes
+    pip:
+      name: mycli
+
+  tags:
+    - mycli

@@ -13,7 +13,7 @@
     shell: pip install --upgrade awscli --user
 
   - name: include aws cli config
-    include_tasks: config.yml 
+    include_tasks: config.yml
 
   tags:
     - awscli

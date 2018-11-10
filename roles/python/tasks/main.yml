@@ -1,0 +1,57 @@
+---
+- block:
+
+  - name: install dependencies for pyenv
+    become: yes
+    yum: name={{item}} state=latest
+    with_items:
+      - gcc
+      - zlib-devel
+      - bzip2
+      - bzip2-devel
+      - readline
+      - readline-devel
+      - sqlite
+      - sqlite-devel
+      - openssl
+      - openssl-devel
+
+  - name: install pyenv
+    git:
+      repo: https://github.com/yyuu/pyenv.git
+      dest: ~/.pyenv
+
+  - name: add pyenv bin to PATH
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: "export PATH=$HOME/.pyenv/bin:$PATH"
+
+  - name: eval pyenv init in shell
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: 'eval "$(pyenv init -)"'
+
+  - name: check if {{pyenv.python_version}} is installed
+    shell: "{{pyenv.bin}} versions | grep {{pyenv.python_version}}"
+    register: python_check_install
+    changed_when: False
+    ignore_errors: True
+
+  - name: install python version {{pyenv.python_version}}
+    shell: "{{pyenv.bin}} install {{pyenv.python_version}}"
+    when: python_check_install|failed
+
+  - name: version specified to be used
+    shell: "{{pyenv.bin}} global {{ pyenv.python_version }}"
+    when: python_check_install|failed
+
+  - name: pyenv rehash
+    shell: "{{pyenv.bin}} rehash"
+    when: python_check_install|failed
+
+  tags:
+    - python

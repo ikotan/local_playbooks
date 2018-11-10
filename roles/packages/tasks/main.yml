@@ -1,6 +1,12 @@
 ---
 - block:
 
+  - name: uninstall mariadb-libs
+    become: yes
+    yum:
+      name: mariadb-ribs
+      state: absent
+
   - name: install packages
     become: yes
     yum:
@@ -13,6 +19,7 @@
       - telnet
       - libselinux-python
       - the_silver_searcher
+      - mysql-devel
 
   tags:
     - packages

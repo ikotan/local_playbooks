@@ -10,10 +10,12 @@
     - vim
     - tmux
     - awscli
-    - redis
+    # - redis
     - docker
     - zsh
     - prezto
     - enhancd
     - ruby
     - nodejs
+    - python
+    - mycli
