@@ -7,12 +7,12 @@
       name: "{{user}}"
       shell: "{{zsh.path}}"
       state: present
-  
+
   - name: install prezto
     git:
       repo: https://github.com/sorin-ionescu/prezto.git
       dest: "{{home}}/.zprezto"
-  
+
   - name: add symbolic link dotfiles
     file: 
       src: "{{home}}/.zprezto/runcoms/{{item}}"
@@ -25,6 +25,15 @@
       - zpreztorc
       - zprofile
       - zshenv
+
+  - name: set environment
+    lineinfile:
+      dest: "{{home}}/.zprezto/runcoms/zprofile"
+      regexp: "{{item.regexp}}"
+      line: "{{item.line}}"
+    with_items:
+      - { regexp: "EDITOR='nano'", line: "export EDITOR='vim'" }
+      - { regexp: "VISUAL='nano'", line: "export VISUAL='vim'" }
 
   - name: set prompt theme
     lineinfile:
