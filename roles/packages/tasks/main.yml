@@ -21,6 +21,7 @@
       - libselinux-python
       - the_silver_searcher
       - mysql-devel
+      - gcc-c++
 
   tags:
     - packages
