@@ -22,6 +22,8 @@
       - the_silver_searcher
       - mysql-devel
       - gcc-c++
+      - patch
+      - postgresql-devel
 
   tags:
     - packages

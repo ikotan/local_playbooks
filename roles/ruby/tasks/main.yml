@@ -16,6 +16,7 @@
       - zlib-devel
       - gdbm-devel
       - ncurses-devel
+      - patch
 
   - name: install rbenv
     git:

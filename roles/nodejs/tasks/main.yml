@@ -49,5 +49,8 @@
     shell: "{{ndenv.bin}} rehash"
     when: ndenv_check_install|failed
 
+  - name: include angular install
+    include_tasks: angular.yml
+
   tags:
     - nodejs
