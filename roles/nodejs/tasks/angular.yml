@@ -2,7 +2,7 @@
 - block:
 
   - name: install angular
-    command: "npm install -g @angular/cli"
+    command: "~/.ndenv/shims/npm install -g @angular/cli"
 
   tags:
     - nodejs

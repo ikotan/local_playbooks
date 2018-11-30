@@ -1,0 +1,27 @@
+---
+- block:
+
+  - name: uninstall mariadb
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: absent
+    with_items:
+      - mariadb-libs
+
+  - name: install rpm
+    become: yes
+    yum:
+      name: http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
+
+  - name: install mysql client and devel
+    become: yes
+    yum:
+      name: "{{item}}"
+      state: latest
+    with_items:
+      - mysql-community-client
+      - mysql-community-devel
+
+  tags:
+    - mysql

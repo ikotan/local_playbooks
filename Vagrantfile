@@ -24,8 +24,8 @@ Vagrant.configure("2") do |config|
     sudo yum install git vim -y
 
     # init config
-    cp /data/vagrant/init/.netrc ~/
-    cp /data/vagrant/init/.gitconfig ~/
-    cp /data/vagrant/init/sshkey/* ~/
+    cp /data/vagrant/init/.netrc /home/vagrant
+    cp /data/vagrant/init/.gitconfig /home/vagrant
+    cp /data/vagrant/init/sshkey/* /home/vagrant/.ssh
   SHELL
 end
