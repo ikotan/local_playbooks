@@ -1,4 +1,5 @@
 ---
+shell_file_path: "~/.zshrc"
 awscli:
   key: "your_key"
   secret: "your_secret"

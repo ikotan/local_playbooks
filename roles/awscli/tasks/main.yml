@@ -12,6 +12,13 @@
   - name: pip upgrade and install awscli
     shell: pip install --upgrade awscli --user
 
+  - name: add .local bin to PATH
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: "export PATH=$HOME/.local/bin:$PATH"
+
   - name: include aws cli config
     include_tasks: config.yml
 
