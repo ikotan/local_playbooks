@@ -1,0 +1,5 @@
+---
+shell_file_path: "~/.zshrc"
+goenv:
+  bin: "~/.goenv/bin/goenv"
+  go_version: "1.12.5"

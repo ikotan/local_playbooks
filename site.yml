@@ -17,6 +17,7 @@
     - docker
     - mysql
     - ruby
+    - golang
     - nodejs
     - python
     - mycli

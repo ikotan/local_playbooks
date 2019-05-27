@@ -1,0 +1,49 @@
+---
+- block:
+
+  - name: install goenv
+    git:
+      repo: https://github.com/syndbg/goenv.git
+      dest: ~/.goenv
+
+  - name: add goenv root to PATH
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: "export GOENV_ROOT=$HOME/.goenv"
+
+  - name: add goenv bin to PATH
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: "export PATH=$GOENV_ROOT/bin:$PATH"
+
+  - name: eval goenv init in shell
+    lineinfile:
+      dest: "{{shell_file_path}}"
+      create: yes
+      state: present
+      line: 'eval "$(goenv init -)"'
+
+  - name: check if {{goenv.go_version}} is installed
+    shell: "{{goenv.bin}} versions | grep {{goenv.go_version}}"
+    register: goenv_check_install
+    changed_when: False
+    ignore_errors: True
+
+  - name: install go version {{goenv.go_version}}
+    shell: "{{goenv.bin}} install -v {{goenv.go_version}}"
+    when: goenv_check_install|failed
+
+  - name: version specified to be used
+    shell: "{{goenv.bin}} global {{ goenv.go_version }}"
+    when: goenv_check_install|failed
+
+  - name: goenv rehash
+    shell: "{{goenv.bin}} rehash"
+    when: goenv_check_install|failed
+
+  tags:
+    - golang
